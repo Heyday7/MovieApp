@@ -19,7 +19,9 @@ interface HomeViewModel :
 
     sealed class Effect {}
 
-    sealed class Event {}
+    sealed class Event {
+        object SearchButtonClicked : Event()
+    }
 
     override val state: StateFlow<State>
     override val effect: Flow<Effect>

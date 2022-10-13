@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -30,5 +31,12 @@ fun HomeScreen() {
             text = state.title,
             color = Color.Red
         )
+        Button(
+            onClick = {
+                dispatch(HomeViewModel.Event.SearchButtonClicked)
+            }
+        ) {
+            Text(text = "Go To Search")
+        }
     }
 }
