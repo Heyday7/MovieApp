@@ -14,7 +14,8 @@ interface HomeViewModel :
 
     data class State(
         val movieId: Int = 76431,
-        val title: String = ""
+        val title: String = "",
+        val moviesNowPlaying: List<String> = emptyList()
     )
 
     sealed class Effect {}

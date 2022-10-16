@@ -26,12 +26,27 @@ class RealHomeViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             kotlin.runCatching {
-                movieRepository.getMovie(state.value.movieId).title
+                movieRepository.getMovie(state.value.movieId)
             }
-                .onSuccess { title ->
+                .onSuccess { movie ->
                     _state.update {
                         it.copy(
-                            title = title
+                            title = movie.title
+                        )
+                    }
+                }
+                .onFailure { e ->
+                    e.printStackTrace()
+                }
+        }
+        viewModelScope.launch {
+            kotlin.runCatching {
+                movieRepository.getMovieNowPlaying(page = 1, language = "ko")
+            }
+                .onSuccess { pagination ->
+                    _state.update { it ->
+                        it.copy(
+                            moviesNowPlaying = pagination.results.map { it.title }
                         )
                     }
                 }
