@@ -39,21 +39,16 @@ class RealHomeViewModel @Inject constructor(
                     e.printStackTrace()
                 }
         }
-        viewModelScope.launch {
-            kotlin.runCatching {
-                movieRepository.getMovieNowPlaying(page = 1, language = "ko")
+        movieRepository.getMovieNowPlaying(page = 1, language = "ko")
+            .onEach { pagination ->
+                _state.update {
+                    it.copy(
+                        moviesNowPlaying = pagination.results
+                    )
+                }
             }
-                .onSuccess { pagination ->
-                    _state.update { it ->
-                        it.copy(
-                            moviesNowPlaying = pagination.results.map { it.title }
-                        )
-                    }
-                }
-                .onFailure { e ->
-                    e.printStackTrace()
-                }
-        }
+            .catch { e -> e.printStackTrace() }
+            .launchIn(viewModelScope)
     }
 
     override fun event(event: HomeViewModel.Event) {

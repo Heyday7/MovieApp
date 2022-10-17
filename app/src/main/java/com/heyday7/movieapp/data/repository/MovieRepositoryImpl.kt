@@ -1,8 +1,14 @@
 package com.heyday7.movieapp.data.repository
 
 import com.heyday7.movieapp.data.api.MovieApi
-import com.heyday7.movieapp.data.api.response.*
-import com.heyday7.movieapp.model.*
+import com.heyday7.movieapp.model.Movie
+import com.heyday7.movieapp.model.Pagination
+import com.heyday7.movieapp.model.SimpleMovie
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import okhttp3.Dispatcher
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
@@ -12,62 +18,13 @@ class MovieRepositoryImpl @Inject constructor(
     override suspend fun getMovie(movieId: Int): Movie =
         movieApi.getMovie(movieId).toMovie()
 
-    override suspend fun getMovieNowPlaying(
+    override fun getMovieNowPlaying(
         page: Int,
         region:String,
         language: String
-    ): Pagination<SimpleMovie> =
-        movieApi.getMovieNowPlaying(page, region, language).toPagination { it.toSimpleMovie() }
+    ): Flow<Pagination<SimpleMovie>> = flow {
+        emit(
+            movieApi.getMovieNowPlaying(page, region, language).toPagination { it.toSimpleMovie() }
+        )
+    }.flowOn(Dispatchers.IO)
 }
-
-fun MovieDTO.toMovie() = Movie(
-    adult,
-    id,
-    imdbId,
-    originalLanguage,
-    originalTitle,
-    overview,
-    popularity,
-    posterPath,
-    productionCompanies.map { it.toCompany() },
-    productionCountries.map { it.toCountry() },
-    releaseDate,
-    runtime,
-    spokenLanguages.map { it.toLanguage() },
-    status,
-    title
-)
-
-fun CompanyDTO.toCompany() = Company(
-    name, id, logoPath, originCountry
-)
-
-fun CountryDTO.toCountry() = Country(
-    isoId, name
-)
-
-fun LanguageDTO.toLanguage() = Language(
-    isoId, name
-)
-
-// SimpleMovie
-fun SimpleMovieDTO.toSimpleMovie() = SimpleMovie(
-    posterPath,
-    adult,
-    overview,
-    releaseDate,
-    genreIds,
-    id,
-    originalTitle,
-    originalLanguage,
-    title,
-    popularity
-)
-
-// Pagination
-fun <T, R> PaginationDTO<T>.toPagination(transformer: (T) -> (R)) = Pagination(
-    page,
-    results.map { transformer(it) },
-    totalPages,
-    totalResults
-)
