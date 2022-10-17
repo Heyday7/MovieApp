@@ -11,7 +11,7 @@ fun MovieDTO.toMovie() = Movie(
     originalTitle,
     overview,
     popularity,
-    posterPath,
+    "https://image.tmdb.org/t/p/original/$posterPath",
     productionCompanies.map { it.toCompany() },
     productionCountries.map { it.toCountry() },
     releaseDate,
@@ -35,7 +35,7 @@ fun LanguageDTO.toLanguage() = Language(
 
 // SimpleMovie
 fun SimpleMovieDTO.toSimpleMovie() = SimpleMovie(
-    posterPath,
+    "https://image.tmdb.org/t/p/original/$posterPath",
     adult,
     overview,
     releaseDate,

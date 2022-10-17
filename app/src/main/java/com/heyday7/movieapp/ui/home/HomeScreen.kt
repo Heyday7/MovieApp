@@ -51,9 +51,7 @@ fun NowPlayingMovieItem(
             .clip(RoundedCornerShape(8.dp))
     ) {
         Image(
-            painter = rememberAsyncImagePainter(
-                "https://image.tmdb.org/t/p/original/${movie.posterPath}"
-            ),
+            painter = rememberAsyncImagePainter(movie.posterPath),
             contentDescription = null,
             modifier = Modifier
                 .fillMaxWidth()
