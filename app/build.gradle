@@ -94,6 +94,9 @@ dependencies {
 
     // navigation-compose
     implementation "androidx.navigation:navigation-compose:$nav_version"
+
+    // coil
+    implementation "io.coil-kt:coil-compose:2.2.2"
 }
 kapt {
     correctErrorTypes true

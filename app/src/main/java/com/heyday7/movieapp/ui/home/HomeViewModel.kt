@@ -2,6 +2,7 @@ package com.heyday7.movieapp.ui.home
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
+import com.heyday7.movieapp.model.SimpleMovie
 import com.heyday7.movieapp.ui.core.UnidirectionalViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +16,7 @@ interface HomeViewModel :
     data class State(
         val movieId: Int = 76431,
         val title: String = "",
-        val moviesNowPlaying: List<String> = emptyList()
+        val moviesNowPlaying: List<SimpleMovie> = emptyList()
     )
 
     sealed class Effect {}
