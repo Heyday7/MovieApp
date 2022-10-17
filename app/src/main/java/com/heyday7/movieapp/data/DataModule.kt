@@ -1,7 +1,9 @@
-package com.heyday7.movieapp.data.repository
+package com.heyday7.movieapp.data
 
 import com.heyday7.movieapp.data.api.KtorMovieApi
 import com.heyday7.movieapp.data.api.MovieApi
+import com.heyday7.movieapp.data.repository.MovieRepository
+import com.heyday7.movieapp.data.repository.MovieRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

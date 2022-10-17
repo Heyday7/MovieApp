@@ -1,16 +1,20 @@
 package com.heyday7.movieapp.ui.home
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.material.Button
+import android.util.Log
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.heyday7.movieapp.model.SimpleMovie
+import com.heyday7.movieapp.ui.core.component.NetworkImage
 import com.heyday7.movieapp.ui.core.use
 
 @Composable
@@ -20,23 +24,60 @@ fun HomeScreen() {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        Text(
-            text = "this is test"
-        )
-        Text(
+        Text(text = "현재 상영장")
+        Spacer(modifier = Modifier.height(12.dp))
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(start = 12.dp, end = 12.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            itemsIndexed(
+                items = state.nowPlayingPaginationState.results,
+                key = {_, item -> "movie_${item.id}"}
+            ) { index, movie ->
+                NowPlayingMovieItem(
+                    modifier = Modifier
+                        .size(width = 150.dp, height = 400.dp),
+                    movie = movie
+                )
+
+                if (
+                    index == state.nowPlayingPaginationState.results.lastIndex &&
+                    state.nowPlayingPaginationState.paginationEnabled
+                ) {
+                    LaunchedEffect(Unit) {
+                        dispatch(HomeViewModel.Event.NowPlayingEndReached)
+                    }
+                }
+            }
+            if (state.nowPlayingPaginationState.isLoadingMore) {
+                item {
+                    CircularProgressIndicator()
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun NowPlayingMovieItem(
+    modifier: Modifier,
+    movie: SimpleMovie
+) {
+    Column(
+        modifier = modifier
+            .clip(RoundedCornerShape(8.dp))
+    ) {
+        NetworkImage(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(20.dp)
-                .background(Color.Blue),
-            text = state.title,
-            color = Color.Red
+                .clip(RoundedCornerShape(8.dp)),
+            imageUrl = movie.posterPath ?: "",
+            contentDescription = null
         )
-        Button(
-            onClick = {
-                dispatch(HomeViewModel.Event.SearchButtonClicked)
-            }
-        ) {
-            Text(text = "Go To Search")
-        }
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(text = movie.title)
+        Spacer(modifier = Modifier.height(2.dp))
+        Text(text = movie.releaseDate)
     }
 }

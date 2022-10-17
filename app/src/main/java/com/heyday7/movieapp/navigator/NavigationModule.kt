@@ -12,5 +12,5 @@ abstract class NavigationModule {
 
     @Binds
     @Singleton
-    abstract fun provideComposeNavigator(movieAppNavigator: MovieAppNavigator): ComposeNavigator
+    abstract fun bindComposeNavigator(movieAppNavigator: MovieAppNavigator): ComposeNavigator
 }
