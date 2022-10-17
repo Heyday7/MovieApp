@@ -16,13 +16,24 @@ interface HomeViewModel :
     data class State(
         val movieId: Int = 76431,
         val title: String = "",
-        val moviesNowPlaying: List<SimpleMovie> = emptyList()
+        val nowPlayingPaginationState: NowPlayingPaginationState = NowPlayingPaginationState()
     )
+
+    data class NowPlayingPaginationState(
+        val results: List<SimpleMovie> = emptyList(),
+        val isLoading: Boolean = false,
+        val isLoadingMore: Boolean = false,
+        val page: Int = 1,
+        val totalPages: Int = 1,
+    ) {
+        val paginationEnabled = !isLoadingMore && page < totalPages
+    }
 
     sealed class Effect {}
 
     sealed class Event {
         object SearchButtonClicked : Event()
+        object NowPlayingEndReached : Event()
     }
 
     override val state: StateFlow<State>

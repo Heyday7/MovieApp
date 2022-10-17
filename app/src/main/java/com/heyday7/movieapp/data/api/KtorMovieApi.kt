@@ -21,6 +21,6 @@ class KtorMovieApi @Inject constructor(
         language: String
     ): PaginationDTO<SimpleMovieDTO> =
         networkService.get(
-            "$url/movie/now_playing?region=$region&language=$language"
+            "$url/movie/now_playing?page=$page&region=$region&language=$language"
         )
 }

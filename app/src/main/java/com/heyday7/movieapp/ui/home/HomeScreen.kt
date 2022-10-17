@@ -1,16 +1,18 @@
 package com.heyday7.movieapp.ui.home
 
-import androidx.compose.foundation.Image
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
 import com.heyday7.movieapp.model.SimpleMovie
 import com.heyday7.movieapp.ui.core.component.NetworkImage
 import com.heyday7.movieapp.ui.core.use
@@ -29,14 +31,29 @@ fun HomeScreen() {
             contentPadding = PaddingValues(start = 12.dp, end = 12.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(
-                items = state.moviesNowPlaying
-            ) { movie ->
+            itemsIndexed(
+                items = state.nowPlayingPaginationState.results,
+                key = {_, item -> "movie_${item.id}"}
+            ) { index, movie ->
                 NowPlayingMovieItem(
                     modifier = Modifier
                         .size(width = 150.dp, height = 400.dp),
                     movie = movie
                 )
+
+                if (
+                    index == state.nowPlayingPaginationState.results.lastIndex &&
+                    state.nowPlayingPaginationState.paginationEnabled
+                ) {
+                    LaunchedEffect(Unit) {
+                        dispatch(HomeViewModel.Event.NowPlayingEndReached)
+                    }
+                }
+            }
+            if (state.nowPlayingPaginationState.isLoadingMore) {
+                item {
+                    CircularProgressIndicator()
+                }
             }
         }
     }
