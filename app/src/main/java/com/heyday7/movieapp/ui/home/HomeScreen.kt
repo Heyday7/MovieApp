@@ -12,6 +12,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.heyday7.movieapp.model.SimpleMovie
+import com.heyday7.movieapp.ui.core.component.NetworkImage
 import com.heyday7.movieapp.ui.core.use
 
 @Composable
@@ -50,12 +51,12 @@ fun NowPlayingMovieItem(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
     ) {
-        Image(
-            painter = rememberAsyncImagePainter(movie.posterPath),
-            contentDescription = null,
+        NetworkImage(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(8.dp))
+                .clip(RoundedCornerShape(8.dp)),
+            imageUrl = movie.posterPath ?: "",
+            contentDescription = null
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(text = movie.title)
