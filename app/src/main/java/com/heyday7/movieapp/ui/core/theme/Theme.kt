@@ -1,4 +1,4 @@
-package com.heyday7.movieapp.ui.theme
+package com.heyday7.movieapp.ui.core.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.heyday7.movieapp.navigator.ComposeNavigator
 import com.heyday7.movieapp.ui.main.AppContent
-import com.heyday7.movieapp.ui.theme.MovieAppTheme
+import com.heyday7.movieapp.ui.core.theme.MovieAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
