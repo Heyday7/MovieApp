@@ -1,12 +1,11 @@
 package com.heyday7.movieapp.ui.home
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -14,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.heyday7.movieapp.model.SimpleMovie
+import com.heyday7.movieapp.ui.core.component.CustomTopBar
 import com.heyday7.movieapp.ui.core.component.NetworkImage
 import com.heyday7.movieapp.ui.core.use
 
@@ -24,6 +24,16 @@ fun HomeScreen() {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
+        CustomTopBar(
+            titleContent = {
+                Text(
+                    text = "영화",
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    style = MaterialTheme.typography.h3
+                )
+            }
+        )
         Text(text = "현재 상영장")
         Spacer(modifier = Modifier.height(12.dp))
         LazyRow(
