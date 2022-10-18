@@ -7,6 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.heyday7.movieapp.R
 import com.heyday7.movieapp.navigator.ComposeNavigator
 import com.heyday7.movieapp.ui.home.HomeScreen
 import com.heyday7.movieapp.ui.home.provideHomeViewModelFactory
@@ -36,7 +37,14 @@ fun AppContent(
             CompositionLocalProvider(
                 provideHomeViewModelFactory { hiltViewModel<RealHomeViewModel>() }
             ) {
-                HomeScreen()
+                BottomNavigationScaffold(
+                    onHomeTabClick = {},
+                    onSearchTabClick = {
+                        navController.navigate("search")
+                    }
+                ) {
+                    HomeScreen()
+                }
             }
         }
         composable(
@@ -45,8 +53,27 @@ fun AppContent(
             CompositionLocalProvider(
                 provideSearchViewModelFactory { hiltViewModel<RealSearchViewModel>() }
             ) {
-                SearchScreen()
+                BottomNavigationScaffold(
+                    onHomeTabClick = {
+                        navController.popBackStack(
+                            route = "home",
+                            inclusive = false,
+                            saveState = true
+                        )
+                    },
+                    onSearchTabClick = {}
+                ) {
+                    SearchScreen()
+                }
             }
         }
     }
+}
+
+enum class Tab(
+    val title: String,
+    val icon: Int
+) {
+    Home(title = "Home", icon = R.drawable.ic_home),
+    Search(title = "Search", icon = R.drawable.ic_search)
 }
